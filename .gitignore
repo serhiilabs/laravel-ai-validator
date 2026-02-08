@@ -1,0 +1,14 @@
+/vendor/
+.phpstan.cache
+.phpunit.cache
+.phpunit.result.cache
+composer.lock
+phpstan.neon
+.php-cs-fixer.cache
+.idea/
+.vscode/
+.DS_Store
+coverage/
+.env
+build/
+*.zip

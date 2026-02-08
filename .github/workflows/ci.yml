@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [8.2, 8.3, 8.4, 8.5]
+        laravel: ['11.*', '12.*']
+        include:
+          - laravel: '11.*'
+            testbench: '9.*'
+          - laravel: '12.*'
+            testbench: '10.*'
+
+    name: Tests - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.composer/cache/files
+          key: php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php-${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --prefer-dist --no-interaction
+
+      - name: Run tests
+        run: vendor/bin/pest
+
+  phpstan:
+    runs-on: ubuntu-latest
+    name: PHPStan
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.composer/cache/files
+          key: php-8.3-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php-8.3-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse
+
+  pint:
+    runs-on: ubuntu-latest
+    name: Pint
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.composer/cache/files
+          key: php-8.3-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php-8.3-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Check formatting
+        run: vendor/bin/pint --test
