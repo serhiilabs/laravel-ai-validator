@@ -33,9 +33,13 @@ This package lets AI handle what regex can't. Describe what valid input looks li
 the value passes. Error messages are returned in the same language as your validation criteria, so non-English apps work
 out of the box.
 
-> **Cost awareness:** Each AI validation rule triggers an API call to your configured provider. Results are cached by
-> default, but keep in mind that high-traffic forms will generate API costs. Use caching, rate limiting, and consider
-> which fields truly need AI validation.
+> **Cost awareness:** Each AI validation rule triggers an API call to your configured provider. This is not a
+> replacement for `required|email|max:255` - it's for 1-2 fields per form where semantic validation actually matters
+> (content moderation, fraud checks, professional bios).
+>
+> Results are cached by default, so the same input with the same description won't hit the API twice. Built-in rate
+> limiting prevents runaway costs. If cost is a hard constraint, use Ollama with a local model - same interface, zero
+> API spend.
 
 ## Installation
 
