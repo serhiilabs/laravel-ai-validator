@@ -109,4 +109,19 @@ return [
         'decay_seconds' => (int) env('AI_VALIDATOR_RATE_LIMIT_DECAY_SECONDS', 60),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Presets
+    |--------------------------------------------------------------------------
+    |
+    | Register reusable validation presets. Each preset is a name => description
+    | pair that can be used via AiRule::preset('name').
+    |
+    | Example:
+    |   'bio-check' => 'Must be a professional biography, 1-3 sentences.',
+    |
+    */
+
+    'presets' => [],
+
 ];

@@ -126,6 +126,29 @@ class StoreProfileRequest extends FormRequest
 
 Both `AiRule::make('...')` and `new AiRule('...')` work identically. `make()` is preferred for method chaining.
 
+### Presets
+
+Register reusable validation presets in `config/ai-validator.php`:
+
+```php
+'presets' => [
+    'profanity-free' => 'No profanity, slurs, vulgar language, or sexually explicit content.',
+    'no-pii' => 'No emails, phone numbers, SSNs, credit cards, or physical addresses.',
+    'professional-tone' => 'Professional tone. No slang, aggression, or inappropriate humor.',
+    'no-spam' => 'No spam, keyword stuffing, repetitive gibberish, or promotional content.',
+    'bio-check' => 'Must be a professional biography, 1-3 sentences.',
+],
+```
+
+Use them by name:
+
+```php
+AiRule::preset('profanity-free');
+AiRule::preset('bio-check')
+    ->timeout(30)
+    ->errorMessage('Please write a short professional bio.');
+```
+
 ### Custom Error Messages
 
 By default, the AI generates a user-friendly explanation when validation fails. Override it with a fixed message:
@@ -483,6 +506,7 @@ $fake->callLog(); // [['value' => ..., 'description' => ..., 'attribute' => ...,
 | `rate_limit.enabled`       | `AI_VALIDATOR_RATE_LIMIT_ENABLED`       | `true`         | Enable/disable rate limiting                    |
 | `rate_limit.max_attempts`  | `AI_VALIDATOR_RATE_LIMIT_MAX_ATTEMPTS`  | `60`           | Max requests per window                         |
 | `rate_limit.decay_seconds` | `AI_VALIDATOR_RATE_LIMIT_DECAY_SECONDS` | `60`           | Window duration in seconds                      |
+| `presets`                  | -                                       | `[]`           | Custom presets (`name => description`)          |
 
 ### Quick `.env` Setup
 

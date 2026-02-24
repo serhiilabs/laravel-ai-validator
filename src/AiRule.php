@@ -39,6 +39,22 @@ final class AiRule implements ValidationRule
         return new self($description);
     }
 
+    public static function preset(string $name): self
+    {
+        /** @var array<string, string> $presets */
+        $presets = config('ai-validator.presets', []);
+
+        if (! isset($presets[$name])) {
+            throw new InvalidArgumentException("Unknown preset: $name.");
+        }
+
+        if (trim($presets[$name]) === '') {
+            throw new InvalidArgumentException("Preset '$name' has an empty description.");
+        }
+
+        return self::make($presets[$name]);
+    }
+
     public function using(string $provider, string $model): self
     {
         $this->options[] = new Using($provider, $model);
