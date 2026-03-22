@@ -9,6 +9,8 @@ use SerhiiLabs\AiValidator\Contracts\AiValidatorInterface;
 use SerhiiLabs\AiValidator\Contracts\DriverInterface;
 use SerhiiLabs\AiValidator\Contracts\ResultCacheInterface;
 use SerhiiLabs\AiValidator\Drivers\PrismDriver;
+use SerhiiLabs\AiValidator\ValueObjects\DriverRequest;
+use SerhiiLabs\AiValidator\ValueObjects\DriverResponse;
 
 it('throws RuntimeException when no driver configured', function () {
     config()->set('ai-validator.driver', null);
@@ -43,9 +45,9 @@ it('does not override existing driver binding', function () {
     $customDriver = new class implements DriverInterface
     {
         public function send(
-            \SerhiiLabs\AiValidator\ValueObjects\DriverRequest $request,
-        ): \SerhiiLabs\AiValidator\ValueObjects\DriverResponse {
-            return new \SerhiiLabs\AiValidator\ValueObjects\DriverResponse(true, 'Custom.');
+            DriverRequest $request,
+        ): DriverResponse {
+            return new DriverResponse(true, 'Custom.');
         }
     };
 

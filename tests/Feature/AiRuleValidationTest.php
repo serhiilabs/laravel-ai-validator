@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Validator;
 use Prism\Prism\Facades\Prism;
 use SerhiiLabs\AiValidator\AiRule;
+use SerhiiLabs\AiValidator\Contracts\AiValidatorInterface;
 
 it('passes validation when LLM returns passed true', function () {
     Prism::fake([
@@ -58,7 +59,7 @@ it('passes validation for null when field is nullable', function () {
 
 it('fails validation when input exceeds max length', function () {
     config(['ai-validator.max_input_length' => 10]);
-    app()->forgetInstance(\SerhiiLabs\AiValidator\Contracts\AiValidatorInterface::class);
+    app()->forgetInstance(AiValidatorInterface::class);
 
     $validator = Validator::make(
         ['company' => str_repeat('a', 11)],

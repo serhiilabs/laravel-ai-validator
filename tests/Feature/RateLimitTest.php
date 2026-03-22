@@ -8,6 +8,7 @@ use Prism\Prism\Facades\Prism;
 use SerhiiLabs\AiValidator\AiRule;
 use SerhiiLabs\AiValidator\Contracts\AiValidatorInterface;
 use SerhiiLabs\AiValidator\Exceptions\RateLimitExceededException;
+use SerhiiLabs\AiValidator\ValueObjects\ValidationContext;
 
 beforeEach(function () {
     RateLimiter::clear('ai_validator');
@@ -121,7 +122,7 @@ it('throws RateLimitExceededException from AiValidator', function () {
 
     RateLimiter::hit('ai_validator', 60);
 
-    $ctx = new \SerhiiLabs\AiValidator\ValueObjects\ValidationContext(
+    $ctx = new ValidationContext(
         value: 'test',
         description: 'test',
         attribute: 'field',

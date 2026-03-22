@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\ExpectationFailedException;
 use SerhiiLabs\AiValidator\AiRule;
 use SerhiiLabs\AiValidator\Testing\AiValidatorFake;
 use SerhiiLabs\AiValidator\ValueObjects\ValidationResult;
@@ -133,7 +134,7 @@ it('assertCalledWithDescription throws for non-matching description', function (
     )->passes();
 
     $fake->assertCalledWithDescription('nonexistent');
-})->throws(PHPUnit\Framework\ExpectationFailedException::class);
+})->throws(ExpectationFailedException::class);
 
 it('assertCalledWithValue throws for non-matching value', function () {
     $fake = AiValidatorFake::pass();
@@ -144,7 +145,7 @@ it('assertCalledWithValue throws for non-matching value', function () {
     )->passes();
 
     $fake->assertCalledWithValue('nonexistent');
-})->throws(PHPUnit\Framework\ExpectationFailedException::class);
+})->throws(ExpectationFailedException::class);
 
 it('assertCalledTimes throws when count differs', function () {
     $fake = AiValidatorFake::pass();
@@ -155,4 +156,4 @@ it('assertCalledTimes throws when count differs', function () {
     )->passes();
 
     $fake->assertCalledTimes(999);
-})->throws(PHPUnit\Framework\ExpectationFailedException::class);
+})->throws(ExpectationFailedException::class);
