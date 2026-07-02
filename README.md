@@ -529,7 +529,7 @@ AI_VALIDATOR_RATE_LIMIT_DECAY_SECONDS=60
 ## Requirements
 
 - PHP 8.2+
-- Laravel 11 or 12
+- Laravel 12 or 13
 - A configured AI driver (built-in PrismDriver requires [prism-php/prism](https://prismphp.com))
 
 ## Contributing
